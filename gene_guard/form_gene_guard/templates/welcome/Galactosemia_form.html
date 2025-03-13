@@ -1,0 +1,251 @@
+{% extends 'welcome/base.html' %} 
+{% load static %} 
+{% block content %}
+
+<div class="assessment-container">
+  <h2>Galactosemia Assessment</h2>
+  
+  <div class="progress-container">
+    <div class="progress-line">
+      <div class="progress-fill" id="progressFill"></div>
+      <div class="progress-circles">
+        <div class="progress-circle active" id="circle1">1</div>
+        <div class="progress-circle" id="circle2">2</div>
+        <div class="progress-circle" id="circle3">3</div>
+        <div class="progress-circle" id="circle4">4</div>
+        <div class="progress-circle" id="circle5">5</div>
+        <div class="progress-circle" id="circle6">6</div>
+        <div class="progress-circle" id="circle7">7</div>
+        <div class="progress-circle" id="circle8">8</div>
+        <div class="progress-circle" id="circle9">9</div>
+        <div class="progress-circle" id="circle10">10</div>
+      </div>
+    </div>
+  </div>
+  
+  <div id="errorMessage" class="error-message hidden">
+    All questions must be answered before you continue.
+  </div>
+  
+  <form id="AssessmentForm">
+    <div class="question-container">
+      <!-- Question 1-->
+      <div class="question active" id="question1">
+        <label>1. Do you have any cases of this disease in your extended family?</label>
+        <div class="radio-group">
+          <label class="radio-option" id="familyHistoryYes">
+            <input type="radio" name="familyHistory" value="yes" required>
+            <span class="radio-circle"></span>
+            Yes
+          </label>
+          <label class="radio-option" id="familyHistoryNo">
+            <input type="radio" name="familyHistory" value="no">
+            <span class="radio-circle"></span>
+            No
+          </label>
+          <label class="radio-option" id="familyHistoryUnknown">
+            <input type="radio" name="familyHistory" value="unknown">
+            <span class="radio-circle"></span>
+            I don't know
+          </label>
+        </div>
+        <div class="btn-group">
+          <div></div>  
+          <button type="button" class="next-btn" onclick="nextQuestion(1)">Next</button>
+        </div>
+      </div>
+      
+      <!-- Question 2 -->
+      <div class="question" id="question2">
+        <label>2. Do both of your parents have this disease?</label>
+        <div class="radio-group">
+          <label class="radio-option" id="bothParentsYes">
+            <input type="radio" name="bothparents" value="yes" required>
+            <span class="radio-circle"></span>
+            Yes
+          </label>
+          <label class="radio-option" id="bothParentsNo">
+            <input type="radio" name="bothparents" value="no">
+            <span class="radio-circle"></span>
+            No
+          </label>
+        </div>
+        <div class="btn-group">
+          <button type="button" class="prev-btn" onclick="prevQuestion(2)">Previous</button>
+          <button type="button" class="next-btn" onclick="nextQuestion(2)">Next</button>
+        </div>
+      </div>
+
+      <!-- Question 3 -->
+      <div class="question" id="question3">
+        <label>3. One of your parents has this disease?</label>
+        <div class="radio-group">
+          <label class="radio-option" id="oneParentYes">
+            <input type="radio" name="oneParent" value="yes" required>
+            <span class="radio-circle"></span>
+            Yes
+          </label>
+          <label class="radio-option" id="oneParentNo">
+            <input type="radio" name="oneParent" value="no">
+            <span class="radio-circle"></span>
+            No
+          </label>
+        </div>
+        <div class="btn-group">
+          <button type="button" class="prev-btn" onclick="prevQuestion(3)">Previous</button>
+          <button type="button" class="next-btn" onclick="nextQuestion(3)">Next</button>
+        </div>
+      </div>
+      
+      <!-- Question 4-->
+      <div class="question" id="question4">
+        <label>4. Have you noticed any symptoms such as vomiting, jaundice, lethargy, or difficulty gaining weight after drinking milk or dairy products?</label>
+        <div class="radio-group">
+          <label class="radio-option" id="symptomsYes">
+            <input type="radio" name="symptoms" value="yes" required>
+            <span class="radio-circle"></span>
+            Yes
+          </label>
+          <label class="radio-option" id="symptomsNo">
+            <input type="radio" name="symptoms" value="no">
+            <span class="radio-circle"></span>
+            No
+          </label>
+        </div>
+        <div class="btn-group">
+          <button type="button" class="prev-btn" onclick="prevQuestion(4)">Previous</button>
+          <button type="button" class="next-btn" onclick="nextQuestion(4)">Next</button>
+        </div>
+      </div>
+ <!-- Question 4-->
+ <div class="question" id="question5">
+    <label>5.Have you ever performed a neonatal screening test (Guthrie test)? </label>
+    <div class="radio-group">
+        <label class="radio-option" id="neonatalTestYes">
+        <input type="radio" name="neonatalTest" value="yes" required>
+        <span class="radio-circle"></span>
+        Yes
+        </label>
+        <label class="radio-option" id="neonatalTestNo">
+        <input type="radio" name="neonatalTest" value="no">
+        <span class="radio-circle"></span>
+        No
+        </label>
+    </div>
+    <div class="btn-group">
+        <button type="button" class="prev-btn" onclick="prevQuestion(5)">Previous</button>
+        <button type="button" class="next-btn" onclick="nextQuestion(5)">Next</button>
+    </div>
+    </div>
+
+    <!-- Question 4-->
+    <div class="question" id="question6">
+        <label>6.Did the neonatal screening test (Guthrie test) detect high levels of galactose or reduced enzymatic activity (GALT)? </label>
+        <div class="radio-group">
+            <label class="radio-option" id="testYes">
+            <input type="radio" name="test" value="yes" required>
+            <span class="radio-circle"></span>
+            Yes
+            </label>
+            <label class="radio-option" id="testNo">
+            <input type="radio" name="test" value="no">
+            <span class="radio-circle"></span>
+            No
+            </label>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="prev-btn" onclick="prevQuestion(6)">Previous</button>
+            <button type="button" class="next-btn" onclick="nextQuestion(6)">Next</button>
+        </div>
+        </div>
+
+      <!-- Question 7-->
+      <div class="question" id="question7">
+        <label>7.Do you have a history of liver problems (e.g., hepatomegaly, liver failure)?</label>
+        <div class="radio-group">
+          <label class="radio-option" id="liverProblemsYes">
+            <input type="radio" name="liverProblem" value="yes" required>
+            <span class="radio-circle"></span>
+            Yes
+          </label>
+          <label class="radio-option" id="liverProblemNo">
+            <input type="radio" name="liverProblem" value="no">
+            <span class="radio-circle"></span>
+            No
+          </label>
+        </div>
+        <div class="btn-group">
+          <button type="button" class="prev-btn" onclick="prevQuestion(7)">Previous</button>
+          <button type="button" class="next-btn" onclick="nextQuestion(7)">Next</button>
+        </div>
+      </div>
+      
+      <!-- Question 7-->
+      <div class="question" id="question8">
+        <label>8.Have you observed a developmental delay (e.g., mental retardation, growth retardation) in you?</label>
+        <div class="radio-group">
+          <label class="radio-option" id="delayYes">
+            <input type="radio" name="delay" value="yes" required>
+            <span class="radio-circle"></span>
+            Yes
+          </label>
+          <label class="radio-option" id="delayNo">
+            <input type="radio" name="delay" value="no">
+            <span class="radio-circle"></span>
+            No
+          </label>
+        </div>
+        <div class="btn-group">
+          <button type="button" class="prev-btn" onclick="prevQuestion(8)">Previous</button>
+          <button type="button" class="next-btn" onclick="nextQuestion(8)">Next</button>
+        </div>
+      </div>
+
+      <!-- Question 8-->
+      <div class="question" id="question9">
+        <label>9.Do you have eye problems such as cataracts?</label>
+        <div class="radio-group">
+          <label class="radio-option" id="eyeProblemsYes">
+            <input type="radio" name="eyeProblems" value="yes" required>
+            <span class="radio-circle"></span>
+            Yes
+          </label>
+          <label class="radio-option" id="eyeProblemsNo">
+            <input type="radio" name="eyeProblems" value="no">
+            <span class="radio-circle"></span>
+            No
+          </label>
+        </div>
+        <div class="btn-group">
+          <button type="button" class="prev-btn" onclick="prevQuestion(9)">Previous</button>
+          <button type="button" class="next-btn" onclick="nextQuestion(9)">Next</button>
+        </div>
+      </div>
+
+      <!-- Question 9-->
+      <div class="question" id="question10">
+        <label>10.Do you have a diet high in galactose (e.g., milk, dairy products)?</label>
+        <div class="radio-group">
+          <label class="radio-option" id="dietGalactoseYes">
+            <input type="radio" name="dietGalactose" value="yes" required>
+            <span class="radio-circle"></span>
+            Yes
+          </label>
+          <label class="radio-option" id="dietGalactoseNo">
+            <input type="radio" name="dietGalactose" value="no">
+            <span class="radio-circle"></span>
+            No
+          </label>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="prev-btn" onclick="prevQuestion(10)">Previous</button>
+            <a href="{% url 'test_complete' %}"><button type="button" class="submit-btn">Finish</button></a>
+          </div>
+      </div>
+    </div>
+  </form>
+  <h6>Please answer the following questions as accurately as possible.</h6>
+</div>
+  
+<script src="{% static 'js/Galactosemia_form.js' %}"></script>
+{% endblock %}

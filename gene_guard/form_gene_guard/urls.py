@@ -3,7 +3,12 @@ from . import views
 
 urlpatterns = [
     path('', views.home,name='home'),
+    path('Formulaire/guidelines/', views.test_guidelines,name='guidelines'),
+    path('Formulaire/complete/', views.test_finish,name='test_complete'),
+    path('Formulaire/edit/', views.test_finish,name='edit_answers'),
     path('Formulaire/', views.formulaire,name='formulaire'),
-    path('Rseultat/', views.resultat,name='resultat'),
+    path('Formulaire/Sickle-cell-anemia', views.formulaire_Sickle_cell_anemia,name='formulaire_Sickle_cell_anemia'),
+    path('Formulaire/Galactosemia', views.formulaire_Galactosemia,name='formulaire_Galactosemia'),
+    path('Resultat/', views.resultat,name='resultat'),
 
 ]

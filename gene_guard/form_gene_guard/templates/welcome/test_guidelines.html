@@ -1,0 +1,53 @@
+<!-- For test_guidelines.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/css.css' %}">
+    <!-- Added Google fonts for the new typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    {% if title %}
+    <title>{{title}}</title>
+    {% else %}
+    <title>Gene Guard - Hereditary Disease Risk Assessment</title>
+    {% endif %}
+</head>
+<body class="body">
+    <div class="test-container">
+        <div class="test-icon">
+            <img src="{% static 'images/guidelines_test.svg' %}" width="150" height="150" padding-top: -30px alt="Test icon">
+        </div>
+
+        <h1 class="test-title">Hereditary Disease Assessment</h1>
+        
+        <!-- Added medical disclaimer for appropriate expectations -->
+        <div class="medical-disclaimer">
+            This assessment helps identify potential risk factors related to hereditary diseases.
+            It is not a diagnostic tool and does not replace medical advice.
+        </div>
+        
+        <div class="guidelines">
+            <p class="guideline">
+                <span class="check-icon">→</span> 
+                No skipping! Answer every question before moving forward.
+            </p>
+            <p class="guideline">
+                <span class="check-icon">↻</span> 
+                Need to rethink something? No problem—go back and edit anytime.
+            </p>
+            <p class="guideline">
+                <span class="check-icon">⏱</span>
+                Take your time and consider each question carefully.
+            </p>
+            <p class="guideline">
+                <span class="check-icon">🔒</span>
+                Your information is secure and will only be used for assessment purposes.
+            </p>
+        </div>
+
+       <a href="{% url 'formulaire_Sickle_cell_anemia'%}" class="start-button">Start Assessment</a> 
+    </div>
+</body>
+</html>

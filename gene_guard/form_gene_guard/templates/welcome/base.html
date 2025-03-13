@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/stylenavbar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/form.css' %}">
     {% if title %}
     <title>{{title}}</title>
     {% else %}
@@ -20,7 +20,7 @@
           <ul class="nav navbar-nav">
             
             <li><a href="{% url 'home' %}">Home</a></li>
-            <li><a href="{% url 'formulaire' %}">Formulaire</a></li>
+            <li><a href="{% url 'guidelines' %}">Formulaire</a></li>
             <li><a href="{% url 'resultat' %}">Resultat</a></li>
           </ul>
         </div>

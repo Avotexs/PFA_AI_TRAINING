@@ -5,7 +5,18 @@ def home(request):
     
     return render(request,'welcome/home.html',{'title':'GeneGuard'})
     
-   
+def test_guidelines(request):
+    return render(request,'welcome/test_guidelines.html',{'title':'GeneGuard'})
+
+def test_finish(request):
+    return render(request,'welcome/test_finish.html',{'title':'GeneGuard'})
+
+
+def formulaire_Sickle_cell_anemia(request):
+    return render(request,'welcome/Sickle_cell_anemia_form.html',{'title':'Formulaire'})
+
+def formulaire_Galactosemia(request):
+    return render(request,'welcome/Galactosemia_form.html',{'title':'Formulaire'})
 
 
 def formulaire(request):
