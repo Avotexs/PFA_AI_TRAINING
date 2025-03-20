@@ -25,3 +25,7 @@ def formulaire(request):
 
 def resultat(request):
     return render(request,'welcome/resultat.html',{'title':'Resultat'})
+
+def ListeMaladie(request):
+    return render(request,'welcome/ListeMaladie.html',{'title':'ListeMaladie'})
+
