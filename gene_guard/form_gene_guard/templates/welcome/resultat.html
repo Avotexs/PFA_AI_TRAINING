@@ -1,4 +1,116 @@
-{% extends 'welcome/base.html'%}
-{% block content%}
-<h1>Resultat page</h1>
-{% endblock content%}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Risque de Drépanocytose</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+
+        #risk-container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            display: inline-block;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #risk-result {
+            font-size: 2em;
+            color: #d9534f;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="risk-container">
+        <h1>Résultat du risque de drépanocytose</h1>
+        <div id="risk-result">Chargement...</div>
+    </div>
+
+    <script>
+        function fetchAndProcessData() {
+            
+            let dataDict = {};
+
+            fetch('/get-sickle-cell-results/')
+                .then(response => response.json())
+                .then(data => {
+                    dataDict = { ...data };
+                    const risk = processData(dataDict);
+                    document.getElementById("risk-result").innerText = `Risque estimé : ${risk}%`;
+                })
+                .catch(error => {
+                    console.error("Erreur:", error);
+                    document.getElementById("risk-result").innerText = "Erreur lors de la récupération des données.";
+                });
+        }
+
+        function processData(dataDict) {
+            let risk = 0;
+
+            if (dataDict.bothparents === "yes") risk += 35;
+            if (dataDict.familyHistory === "yes") risk += 10;
+
+            if (dataDict.testResult) {
+                switch(dataDict.testResult) {
+                    case "HbSS":
+                        return 81;
+                    case "HbAS":
+                        risk += 10;
+                        break;
+                    case "HbA":
+                        risk += 0;
+                        break;
+                    default:
+                        risk += 20;
+                }
+            }
+
+            if (dataDict.sickle === "yes" && !dataDict.testResult) {
+                return 100;
+            }
+
+            const symptoms = [
+                "FrequentPain",
+                "abdominalPain",
+                "yellow",
+                "bloodTransfusion"
+            ];
+
+            let symptomCount = 0;
+            symptoms.forEach(symptom => {
+                if (dataDict[symptom] === "yes") {
+                    symptomCount++;
+                }
+            });
+
+            risk += symptomCount * 8;
+
+            const highRiskGroups = ["Africain", "Méditerranéen", "Antillais"];
+            if (highRiskGroups.includes(dataDict.ethnicGroup)) risk += 10;
+
+            if (dataDict.history === "yes") risk += 15;
+            if (dataDict.diet === "yes") risk += 5;
+            if (dataDict.smoking === "yes") risk += 5;
+
+            if (dataDict.diagnosed === "yes") return 78;
+
+            return Math.min(Math.max(risk, 0), 100);
+        }
+
+        // Lancer au chargement de la page
+        fetchAndProcessData();
+    </script>
+
+</body>
+</html>

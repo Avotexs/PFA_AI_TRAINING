@@ -388,4 +388,23 @@ flex-grow: 1;
   }
   
  
+  .loader-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+  }
+  
+  /* Exemple d’un spinner simple au lieu de ton SVG pencil */
+  .pencil {
+    animation: rotate 2s linear infinite;
+  }
+  
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
   

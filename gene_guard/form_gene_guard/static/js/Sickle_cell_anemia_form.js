@@ -1,6 +1,11 @@
+//objet pour stocker les reponses
+let userResponses = {};
+
 // Progress tracking
 const totalQuestions = 15;
 let currentQuestion = 1;
+
+
 
 // Update progress bar
 function updateProgress(questionNumber) {
@@ -53,44 +58,42 @@ function validateQuestion(questionElement) {
 function nextQuestion(current) {
   const currentQuestionElement = document.getElementById('question' + current);
   
-  // Validate the current question
+  // Valider la question actuelle
   if (!validateQuestion(currentQuestionElement)) {
     showErrorMessage();
     return;
   }
   
   hideErrorMessage();
+
+  // Sauvegarder la réponse
+  saveUserResponse(current);
+
   currentQuestionElement.classList.remove('active');
-  
-  let nextQuestionNumber = current + 1; // Default next question
-  
-  // Check for question 2 conditional logic
+  let nextQuestionNumber = current + 1;
+
+  // Logique conditionnelle
   if (current === 2) {
     const bothParentsValue = document.querySelector('input[name="bothparents"]:checked').value;
     if (bothParentsValue === 'yes') {
-      nextQuestionNumber = 4; // Skip question 3
+      nextQuestionNumber = 4;
     }
-    // If 'no', proceed to question 3 (default behavior)
-  }
-  
-  
-  // Check for question 10 conditional logic
-  else if (current === 10) {
+  } else if (current === 10) {
     const hemoglobinTestValue = document.querySelector('input[name="hemoglobinTest"]:checked').value;
     if (hemoglobinTestValue === 'no') {
-      nextQuestionNumber = 12; // Skip question 11
+      nextQuestionNumber = 12;
     }
-    // If 'yes', proceed to question 11 (default behavior)
   }
-  
+
   const nextQuestionElement = document.getElementById('question' + nextQuestionNumber);
-  
   if (nextQuestionElement) {
     nextQuestionElement.classList.add('active');
     currentQuestion = nextQuestionNumber;
     updateProgress(currentQuestion);
   }
+  console.log(userResponses);
 }
+
 
 // Go to previous question with conditional logic
 function prevQuestion(current) {
@@ -173,3 +176,55 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Initialize
 updateProgress(1);
+
+function saveUserResponse(questionNumber) {
+  console.log("saveuserresponses appelée"); 
+  const questionElement = document.getElementById('question' + questionNumber);
+  const inputs = questionElement.querySelectorAll('input, select');
+  
+  inputs.forEach(input => {
+    if (input.type === 'radio' && input.checked) {
+      userResponses[input.name] = input.value;
+    } else if (input.tagName === 'SELECT' && input.value) {
+      userResponses[input.name] = input.value;
+    }
+  });
+
+  console.log(userResponses); // Vérification des réponses en console
+}
+
+function submitResponses() {
+  console.log("submitResponses appelée");
+  console.log("userResponses avant envoi:", userResponses); 
+  saveUserResponse(15);
+  fetch('/save-result/', {  // URL définie dans urls.py
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCSRFToken()  // Récupération du token CSRF
+      },
+      body: JSON.stringify(userResponses)  // Envoi des réponses
+  })
+  .then(response => response.json())
+  .then(data => {
+      console.log(data);
+      if (data.message) {
+          alert("Données enregistrées avec succès ! ID: " + data.id);
+          window.location.href = "/Formulaire/complete/";  // Redirection après soumission
+      } else {
+          alert("Erreur lors de l'enregistrement : " + data.error);
+      }
+  })
+  .catch(error => console.error("Erreur:", error));
+}
+
+// Fonction pour récupérer le token CSRF
+function getCSRFToken() {
+  return document.cookie.split('; ')
+      .find(row => row.startsWith('csrftoken'))
+      ?.split('=')[1] || '';
+}
+
+
+
+
