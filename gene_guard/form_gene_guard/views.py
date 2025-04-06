@@ -29,3 +29,35 @@ def resultat(request):
 def ListeMaladie(request):
     return render(request,'welcome/ListeMaladie.html',{'title':'ListeMaladie'})
 
+
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+from .models import SickleCellResult  # Import du modèle
+
+@csrf_exempt  # Désactive la protection CSRF (utile pour le développement)
+def save_sickle_cell_result(request):
+    if request.method == "POST":  # Vérifie si la requête est POST
+        try:
+            data = json.loads(request.body)  # Convertit le JSON reçu en dictionnaire Python
+            result = SickleCellResult.objects.create(responses=data)  # Enregistre en base
+            return JsonResponse({"message": "Données enregistrées avec succès", "id": result.user_id}, status=201)  
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=400)  # En cas d'erreur
+    return JsonResponse({"error": "Méthode non autorisée"}, status=405)  # Si ce n'est pas une requête POST
+
+
+
+
+
+def get_sickle_cell_results(request):
+    # Récupérer le dernier enregistrement
+    result = SickleCellResult.objects.last()  # Récupère le dernier enregistrement
+    
+    if result:
+        # Si un résultat existe, retourner les réponses sous forme de JSON
+        return JsonResponse(result.responses, safe=False)
+    else:
+        # Si aucun résultat n'est trouvé, renvoyer une erreur
+        return JsonResponse({"error": "Aucun résultat trouvé."}, status=404)

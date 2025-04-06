@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from .views import save_sickle_cell_result 
 
 urlpatterns = [
     path('', views.home,name='home'),
@@ -11,6 +12,15 @@ urlpatterns = [
     path('Formulaire/Galactosemia', views.formulaire_Galactosemia,name='formulaire_Galactosemia'),
     path('Resultat/', views.resultat,name='resultat'),
     path('ListeMaladie/', views.ListeMaladie,name='ListeMaladie'),
+  
+
+
+    path('save-result/', save_sickle_cell_result, name='save_sickle_cell_result'),
+
+    path('get-sickle-cell-results/', views.get_sickle_cell_results, name='get_sickle_cell_results'),
+
+
+
     
 
 ]

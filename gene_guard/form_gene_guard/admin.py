@@ -1,3 +1,7 @@
 from django.contrib import admin
 
-# Register your models here.
+
+from .models import SickleCellResult  # Import du modèle
+
+admin.site.register(SickleCellResult)  # Enregistrement dans l'admin
+
