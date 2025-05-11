@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     age = models.PositiveIntegerField()
@@ -13,6 +12,17 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.username
 
+#hadi dyal Cholesterol
+
+from django.db import models
+
+class CholesterolResult(models.Model):
+    user_id = models.AutoField(primary_key=True)
+    responses = models.JSONField()  # Stocke les réponses en tant que dictionnaire JSON
+    created_at = models.DateTimeField(auto_now_add=True)  # Date d'enregistrement
+
+    def __str__(self):
+        return f"Result ID: {self.user_id}"
 
 class SickleCellResult(models.Model):
     user_id = models.AutoField(primary_key=True)          # PK auto-incrémentée

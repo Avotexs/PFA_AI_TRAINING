@@ -243,15 +243,15 @@
                 icon: "{% static 'image/sickle.jpg' %}"
             },
             {
-                name: "Diabetes",
+                name: "Galactosemia",
                 description: "Specialized heart health examination including ECG, blood pressure monitoring, and consultation with our cardiology specialists. Recommended for patients with heart conditions or risk factors.",
-                formUrl: "{% url 'formulaire_diabetes' %}",
-                icon: "{% static 'image/diabete.png' %}"
+                formUrl: "{% url 'formulaire_Galactosemia' %}",
+                icon: "{% static 'image/Cystic.png' %}"
             },
             {
-                name: "Spina bifida",
+                name: "hypercholesterolemia",
                 description: "Child-friendly healthcare services for infants, children, and adolescents. Our pediatricians provide growth monitoring, vaccinations, and treatment for common childhood illnesses.",
-                formUrl: "form.html?item=pediatric",
+                formUrl: "{% url 'formulaire_hypercholesterolemia' %}",
                 icon: "{% static 'image/Spina.png' %}"
             },
             {
@@ -267,10 +267,10 @@
                 icon: "{% static 'image/Muscular.png' %}"
             },
             {
-                name: "Arthritis",
+                name: "diabetes",
                 description: "Rehabilitation services for patients recovering from injuries or surgeries. Our physiotherapists develop personalized treatment plans to improve mobility, reduce pain, and restore functionality.",
-                formUrl: "form.html?item=physiotherapy",
-                icon: "{% static 'image/Arthritis.png' %}"
+                formUrl: "{% url 'formulaire_diabetes' %}",
+                icon: "{% static 'image/diabete.png' %}"
             }
         ];
 
