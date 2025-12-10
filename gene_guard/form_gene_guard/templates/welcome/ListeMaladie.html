@@ -2,241 +2,248 @@
 {% load static%}
 {% block content%}
 
-    <style>
-        * {
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
+<style>
+    * {
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    .bodyformul {
+        background-color: #f8fcff;
+        color: #2c3e50;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 20px;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #3498db;
+        font-size: 2.5rem;
+        font-weight: 600;
+    }
+
+    .header-icon {
+        color: #45a049;
+        margin-right: 10px;
+    }
+
+    .search-container {
+        margin-bottom: 30px;
+        position: relative;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #searchInput {
+        width: 100%;
+        padding: 15px 20px 15px 50px;
+        font-size: 16px;
+        background-color: white;
+        border: 2px solid #e3f2fd;
+        border-radius: 30px;
+        color: #2c3e50;
+        transition: all 0.3s ease;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    #searchInput:focus {
+        outline: none;
+        border-color: #91e4f3;
+        box-shadow: 0 5px 15px rgba(145, 228, 243, 0.3);
+    }
+
+    .search-icon {
+        position: absolute;
+        left: 20px;
+        top: 15px;
+        color: #3498db;
+        font-size: 20px;
+    }
+
+    .items-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .item {
+        background-color: white;
+        border-radius: 12px;
+        border: 1px solid #e6e6e6;
+        padding: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        border-color: #91e4f3;
+    }
+
+    .item:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 5px;
+        height: 100%;
+        background-color: #45a049;
+        border-radius: 3px 0 0 3px;
+    }
+
+    .item-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding-left: 10px;
+    }
+
+    .item-icon {
+        background-color: #e3f2fd;
+        color: #3498db;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .item-name {
+        font-size: 18px;
+        font-weight: 600;
+        color: #2c3e50;
+        flex-grow: 1;
+    }
+
+    .toggle-icon {
+        color: #3498db;
+        font-size: 16px;
+        transition: transform 0.3s ease;
+        width: 24px;
+        height: 24px;
+        text-align: center;
+    }
+
+    .active .toggle-icon {
+        transform: rotate(180deg);
+    }
+
+    .item-description {
+        display: none;
+        margin-top: 15px;
+        padding: 15px;
+        padding-left: 25px;
+        border-top: 1px solid #e3f2fd;
+        line-height: 1.6;
+        color: #7f8c8d;
+        background-color: rgba(227, 242, 253, 0.3);
+        border-radius: 0 0 10px 10px;
+    }
+
+    .active .item-description {
+        display: block;
+        animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
         }
-        
-        .bodyformul {
-            background-color: #f8fcff;
-            color: #2c3e50;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
         }
-        
-        h1 {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #3498db;
-            font-size: 2.5rem;
-            font-weight: 600;
-        }
-        
-        .header-icon {
-            color: #45a049;
-            margin-right: 10px;
-        }
-        
-        .search-container {
-            margin-bottom: 30px;
-            position: relative;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        #searchInput {
-            width: 100%;
-            padding: 15px 20px 15px 50px;
-            font-size: 16px;
-            background-color: white;
-            border: 2px solid #e3f2fd;
-            border-radius: 30px;
-            color: #2c3e50;
-            transition: all 0.3s ease;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
-        }
-        
-        #searchInput:focus {
-            outline: none;
-            border-color: #91e4f3;
-            box-shadow: 0 5px 15px rgba(145, 228, 243, 0.3);
-        }
-        
-        .search-icon {
-            position: absolute;
-            left: 20px;
-            top: 15px;
-            color: #3498db;
-            font-size: 20px;
-        }
-        
+    }
+
+    .form-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background-color: #45a049;
+        color: white;
+        padding: 10px 20px;
+        margin-top: 15px;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        box-shadow: 0 3px 6px rgba(69, 160, 73, 0.3);
+    }
+
+    .form-button:hover {
+        background-color: #3b8a3e;
+        box-shadow: 0 5px 15px rgba(69, 160, 73, 0.4);
+        transform: translateY(-2px);
+    }
+
+    .no-results {
+        display: none;
+        padding: 30px;
+        text-align: center;
+        background-color: white;
+        border-radius: 12px;
+        border: 1px dashed #91e4f3;
+        grid-column: span 2;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .no-results i {
+        font-size: 40px;
+        color: #91e4f3;
+        margin-bottom: 15px;
+        display: block;
+    }
+
+    /* Responsive adjustments */
+    @media screen and (max-width: 768px) {
         .items-container {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
+            grid-template-columns: 1fr;
         }
-        
-        .item {
-            background-color: white;
-            border-radius: 12px;
-            border: 1px solid #e6e6e6;
-            padding: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-        }
-        
-        .item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-            border-color: #91e4f3;
-        }
-        
-        .item:before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 5px;
-            height: 100%;
-            background-color: #45a049;
-            border-radius: 3px 0 0 3px;
-        }
-        
-        .item-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding-left: 10px;
-        }
-        
-        .item-icon {
-            background-color: #e3f2fd;
-            color: #3498db;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-        }
-        
-        .item-name {
-            font-size: 18px;
-            font-weight: 600;
-            color: #2c3e50;
-            flex-grow: 1;
-        }
-        
-        .toggle-icon {
-            color: #3498db;
-            font-size: 16px;
-            transition: transform 0.3s ease;
-            width: 24px;
-            height: 24px;
-            text-align: center;
-        }
-        
-        .active .toggle-icon {
-            transform: rotate(180deg);
-        }
-        
-        .item-description {
-            display: none;
-            margin-top: 15px;
-            padding: 15px;
-            padding-left: 25px;
-            border-top: 1px solid #e3f2fd;
-            line-height: 1.6;
-            color: #7f8c8d;
-            background-color: rgba(227, 242, 253, 0.3);
-            border-radius: 0 0 10px 10px;
-        }
-        
-        .active .item-description {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .form-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background-color: #45a049;
-            color: white;
-            padding: 10px 20px;
-            margin-top: 15px;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            box-shadow: 0 3px 6px rgba(69, 160, 73, 0.3);
-        }
-        
-        .form-button:hover {
-            background-color: #3b8a3e;
-            box-shadow: 0 5px 15px rgba(69, 160, 73, 0.4);
-            transform: translateY(-2px);
-        }
-        
+
         .no-results {
-            display: none;
-            padding: 30px;
-            text-align: center;
-            background-color: white;
-            border-radius: 12px;
-            border: 1px dashed #91e4f3;
-            grid-column: span 2;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            grid-column: span 1;
         }
-        
-        .no-results i {
-            font-size: 40px;
-            color: #91e4f3;
-            margin-bottom: 15px;
-            display: block;
-        }
-        
-        /* Responsive adjustments */
-        @media screen and (max-width: 768px) {
-            .items-container {
-                grid-template-columns: 1fr;
-            }
-            
-            .no-results {
-                grid-column: span 1;
-            }
-        }
-    </style>
+    }
+</style>
 
 <body>
     <div class="bodyformul">
-    <h1><i class="fas fa-heartbeat header-icon"></i>Medical disease Directory</h1>
-    
-    <div class="search-container">
-        <i class="fas fa-search search-icon"></i>
-        <input type="text" id="searchInput" placeholder="Search for a service...">
+        <h1><i class="fas fa-heartbeat header-icon"></i>Medical disease Directory</h1>
+
+        <div class="search-container">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" id="searchInput" placeholder="Search for a service...">
+        </div>
+
+        <div class="items-container" id="itemsContainer">
+            <!-- Items will be added here by JavaScript -->
+        </div>
+
+        <div class="no-results" id="noResults">
+            <i class="fas fa-file-medical-alt"></i>
+            <p>No disease found matching your search.</p>
+        </div>
     </div>
-    
-    <div class="items-container" id="itemsContainer">
-        <!-- Items will be added here by JavaScript -->
-    </div>
-    
-    <div class="no-results" id="noResults">
-        <i class="fas fa-file-medical-alt"></i>
-        <p>No disease found matching your search.</p>
-    </div>
-</div>
     <script>
         // Sample data with medical theme
         const items = [
-        
+
             {
                 name: "Sickle Cell Anemia",
                 description: "The hemoglobin is abnormal, which causes the red blood cells to become hard and sticky and look like a C-shaped farm tool called a sickle.",
@@ -272,6 +279,12 @@
                 description: "Rehabilitation services for patients recovering from injuries or surgeries. Our physiotherapists develop personalized treatment plans to improve mobility, reduce pain, and restore functionality.",
                 formUrl: "{% url 'formulaire_diabetes' %}",
                 icon: "{% static 'image/diabete.png' %}"
+            },
+            {
+                name: "AVC (Accident Vasculaire Cérébral)",
+                description: "Évaluation des risques d'accident vasculaire cérébral (AVC). Notre système analyse vos facteurs de risque pour prédire la probabilité d'un AVC et vous aider à prendre des mesures préventives.",
+                formUrl: "{% url 'prediction' %}",
+                icon: "fas fa-brain"
             }
         ];
 
@@ -279,19 +292,18 @@
         function createItemElements() {
             const container = document.getElementById('itemsContainer');
             container.innerHTML = '';
-            
+
             items.forEach(item => {
                 const itemElement = document.createElement('div');
                 itemElement.className = 'item';
-                
+
                 itemElement.innerHTML = `
                     <div class="item-header">
                         <div class="item-icon">
-  ${
-    item.icon.startsWith("http") || item.icon.startsWith("/") || item.icon.includes("static")
-      ? `<img src="${item.icon}" alt="${item.name}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">`
-      : `<i class="${item.icon}"></i>`
-  }
+  ${item.icon.startsWith("http") || item.icon.startsWith("/") || item.icon.includes("static")
+                        ? `<img src="${item.icon}" alt="${item.name}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">`
+                        : `<i class="${item.icon}"></i>`
+                    }
 </div>
                         <h3 class="item-name">${item.name}</h3>
                         <i class="fas fa-chevron-down toggle-icon"></i>
@@ -303,8 +315,8 @@
                         </a>
                     </div>
                 `;
-                
-                itemElement.addEventListener('click', function() {
+
+                itemElement.addEventListener('click', function () {
                     // Toggle the active class to show/hide description
                     if (this.classList.contains('active')) {
                         this.classList.remove('active');
@@ -316,7 +328,7 @@
                         this.classList.add('active');
                     }
                 });
-                
+
                 container.appendChild(itemElement);
             });
         }
@@ -325,14 +337,14 @@
         function setupSearch() {
             const searchInput = document.getElementById('searchInput');
             const noResults = document.getElementById('noResults');
-            
-            searchInput.addEventListener('input', function() {
+
+            searchInput.addEventListener('input', function () {
                 const searchTerm = this.value.toLowerCase();
                 let resultsFound = false;
-                
+
                 document.querySelectorAll('.item').forEach(item => {
                     const name = item.querySelector('.item-name').textContent.toLowerCase();
-                    
+
                     if (name.includes(searchTerm)) {
                         item.style.display = 'block';
                         resultsFound = true;
@@ -340,7 +352,7 @@
                         item.style.display = 'none';
                     }
                 });
-                
+
                 // Show "no results" message if needed
                 noResults.style.display = resultsFound ? 'none' : 'block';
             });
@@ -359,5 +371,4 @@
 
 
 
-{% endblock content%}
-
+    {% endblock content%}

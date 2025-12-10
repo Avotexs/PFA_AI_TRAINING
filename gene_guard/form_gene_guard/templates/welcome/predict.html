@@ -1,24 +1,185 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Prédiction AVC</title>
-    </head>
-<body>
-    <h1>Diagnostic AVC</h1>
+{% extends 'welcome/base.html' %}
+{% load static %}
 
-    <form method="post">
+{% block content %}
+<style>
+    .predict-container {
+        max-width: 700px;
+        margin: 120px auto 60px;
+        padding: 40px;
+        background: linear-gradient(145deg, #ffffff 0%, #f0fff4 100%);
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0, 166, 81, 0.15);
+        border-top: 5px solid #00A651;
+        position: relative;
+    }
+
+    .predict-container::before {
+        content: '+';
+        position: absolute;
+        top: -15px;
+        right: 30px;
+        font-size: 50px;
+        font-weight: bold;
+        color: #00A651;
+        background: white;
+        padding: 0 10px;
+    }
+
+    .predict-header {
+        text-align: center;
+        margin-bottom: 35px;
+    }
+
+    .predict-header h1 {
+        color: #00A651;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+    }
+
+    .predict-header h1 i {
+        font-size: 1.8rem;
+    }
+
+    .predict-header p {
+        color: #5a6c7d;
+        font-size: 1rem;
+    }
+
+    .predict-form {
+        background: #ffffff;
+        padding: 30px;
+        border-radius: 16px;
+        box-shadow: 0 4px 15px rgba(0, 119, 182, 0.08);
+        border-left: 4px solid #0077B6;
+    }
+
+    .predict-form p {
+        margin-bottom: 20px;
+    }
+
+    .predict-form label {
+        display: block;
+        color: #1a3a52;
+        font-weight: 600;
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+    }
+
+    .predict-form input,
+    .predict-form select {
+        width: 100%;
+        padding: 14px 18px;
+        border: 2px solid #e8f5e9;
+        border-radius: 10px;
+        font-size: 1rem;
+        color: #1a3a52;
+        background: #fafffe;
+        transition: all 0.3s ease;
+    }
+
+    .predict-form input:focus,
+    .predict-form select:focus {
+        outline: none;
+        border-color: #00A651;
+        box-shadow: 0 0 0 4px rgba(0, 166, 81, 0.1);
+        background: #ffffff;
+    }
+
+    .predict-form input::placeholder {
+        color: #a0aab4;
+    }
+
+    .predict-submit {
+        width: 100%;
+        padding: 16px 30px;
+        margin-top: 25px;
+        background: linear-gradient(135deg, #00A651 0%, #00B4D8 100%);
+        color: white;
+        border: none;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 6px 20px rgba(0, 166, 81, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .predict-submit:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(0, 166, 81, 0.4);
+    }
+
+    .predict-submit:active {
+        transform: translateY(-1px);
+    }
+
+    .result-box {
+        margin-top: 30px;
+        padding: 25px;
+        border-radius: 16px;
+        background: linear-gradient(145deg, #e8f5e9, #ffffff);
+        border-left: 5px solid #00A651;
+        box-shadow: 0 4px 15px rgba(0, 166, 81, 0.1);
+    }
+
+    .result-box h3 {
+        color: #00A651;
+        font-size: 1.3rem;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .result-box p {
+        color: #1a3a52;
+        font-size: 1.1rem;
+    }
+
+    .result-box strong {
+        color: #0077B6;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .predict-container {
+            margin: 100px 20px 40px;
+            padding: 25px;
+        }
+    }
+</style>
+
+<div class="predict-container">
+    <div class="predict-header">
+        <h1><i class="fas fa-brain"></i> Diagnostic AVC</h1>
+        <p>Évaluation des risques d'accident vasculaire cérébral</p>
+    </div>
+
+    <form method="post" class="predict-form">
         {% csrf_token %}
-        
+
         {{ form.as_p }}
-        
-        <button type="submit">Lancer l'analyse</button>
+
+        <button type="submit" class="predict-submit">
+            <i class="fas fa-heartbeat"></i> Lancer l'analyse
+        </button>
     </form>
 
     {% if resultat %}
-        <div style="margin-top: 20px; padding: 10px; border: 2px solid #333;">
-            <h3>Résultat : {{ resultat }}</h3>
-            <p>Probabilité : {{ proba }} %</p>
-        </div>
+    <div class="result-box">
+        <h3><i class="fas fa-chart-line"></i> Résultat : {{ resultat }}</h3>
+        <p>Probabilité : <strong>{{ proba }} %</strong></p>
+    </div>
     {% endif %}
-</body>
-</html>
+</div>
+{% endblock %}
