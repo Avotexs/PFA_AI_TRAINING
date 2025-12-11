@@ -26,19 +26,17 @@
                 </a>
             </div>
             <ul class="nav navbar-nav">
-                <li><a href="{% url 'home' %}">Home</a></li>
-
-                <li><a href="{% url 'ListeMaladie' %}">Formulaire</a></li>
-
-                <li><a href="{% url 'ListeMaladie' %}">Resultat</a></li>
-                <li><a href="{% url 'wiki' %}">Wiki</a></li>
+                <li><a href="{% url 'home' %}"><i class="fas fa-home"></i> Accueil</a></li>
+                <li><a href="{% url 'ListeMaladie' %}"><i class="fas fa-file-medical"></i> Tests</a></li>
+                <li><a href="{% url 'wiki' %}"><i class="fas fa-book-medical"></i> Wiki</a></li>
                 {% if user.is_authenticated %}
-
-                <li><a href="{% url 'historique' %}">historique results</a></li>
-                <li><a href="{% url 'logout' %}">Logout</a></li>
+                <li><a href="{% url 'historique' %}"><i class="fas fa-history"></i> Historique</a></li>
+                <li><a href="{% url 'profile' %}"><i class="fas fa-user-circle"></i> Mon Profil</a></li>
+                <li><a href="{% url 'logout' %}" style="color: #c62828;"><i class="fas fa-sign-out-alt"></i>
+                        Déconnexion</a></li>
                 {% else %}
-                <li><a href="{% url 'register' %}">Register</a></li>
-                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'register' %}"><i class="fas fa-user-plus"></i> Inscription</a></li>
+                <li><a href="{% url 'login' %}"><i class="fas fa-sign-in-alt"></i> Connexion</a></li>
                 {% endif %}
             </ul>
         </div>

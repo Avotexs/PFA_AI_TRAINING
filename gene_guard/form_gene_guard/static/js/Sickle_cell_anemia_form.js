@@ -11,7 +11,7 @@ let currentQuestion = 1;
 function updateProgress(questionNumber) {
   const progressPercentage = ((questionNumber - 1) / (totalQuestions - 1)) * 100;
   document.getElementById('progressFill').style.width = progressPercentage + '%';
-  
+
   // Update circle status
   for (let i = 1; i <= totalQuestions; i++) {
     const circle = document.getElementById('circle' + i);
@@ -38,7 +38,7 @@ function hideErrorMessage() {
 function validateQuestion(questionElement) {
   const inputs = questionElement.querySelectorAll('input[required], select[required]');
   let isValid = true;
-  
+
   inputs.forEach(input => {
     if (input.type === 'radio') {
       const name = input.name;
@@ -50,20 +50,20 @@ function validateQuestion(questionElement) {
       isValid = false;
     }
   });
-  
+
   return isValid;
 }
 
 // Go to next question with conditional logic
 function nextQuestion(current) {
   const currentQuestionElement = document.getElementById('question' + current);
-  
+
   // Valider la question actuelle
   if (!validateQuestion(currentQuestionElement)) {
     showErrorMessage();
     return;
   }
-  
+
   hideErrorMessage();
 
   // Sauvegarder la réponse
@@ -91,7 +91,7 @@ function nextQuestion(current) {
     currentQuestion = nextQuestionNumber;
     updateProgress(currentQuestion);
   }
-  
+
 }
 
 
@@ -99,9 +99,9 @@ function nextQuestion(current) {
 function prevQuestion(current) {
   const currentQuestionElement = document.getElementById('question' + current);
   currentQuestionElement.classList.remove('active');
-  
+
   let prevQuestionNumber = current - 1; // Default previous question
-  
+
   // Special handling for going back from question 4
   if (current === 4) {
     // Check if user came directly from question 2 (skipped 3)
@@ -111,8 +111,8 @@ function prevQuestion(current) {
     }
     // Otherwise, the default (question 3) is correct
   }
-  
-  
+
+
   // Special handling for going back from question 12
   else if (current === 12) {
     // Check if user came from question 10 (skipped 11)
@@ -122,28 +122,28 @@ function prevQuestion(current) {
     }
     // Otherwise, the default (question 11) is correct
   }
-  
+
   const prevQuestionElement = document.getElementById('question' + prevQuestionNumber);
-  
+
   if (prevQuestionElement) {
     prevQuestionElement.classList.add('active');
     currentQuestion = prevQuestionNumber;
     updateProgress(currentQuestion);
   }
-  
+
   hideErrorMessage();
 }
 
 // Handle radio option selection styling
 document.querySelectorAll('.radio-option').forEach(option => {
-  option.addEventListener('click', function() {
+  option.addEventListener('click', function () {
     const name = this.querySelector('input').name;
     document.querySelectorAll(`input[name="${name}"]`).forEach(input => {
       input.closest('.radio-option').classList.remove('selected');
     });
     this.classList.add('selected');
     this.querySelector('input').checked = true;
-    
+
     // Hide error message when an option is selected
     hideErrorMessage();
   });
@@ -151,7 +151,7 @@ document.querySelectorAll('.radio-option').forEach(option => {
 
 // Add event listeners to selects
 document.querySelectorAll('select[required]').forEach(select => {
-  select.addEventListener('change', function() {
+  select.addEventListener('change', function () {
     if (this.value) {
       hideErrorMessage();
     }
@@ -159,12 +159,12 @@ document.querySelectorAll('select[required]').forEach(select => {
 });
 
 // Handle form submission - for the final question
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   const submitBtn = document.querySelector('.submit-btn');
   if (submitBtn) {
-    submitBtn.addEventListener('click', function(event) {
+    submitBtn.addEventListener('click', function (event) {
       const currentQuestionElement = document.getElementById('question' + currentQuestion);
-      
+
       // Validate the final question
       if (!validateQuestion(currentQuestionElement)) {
         event.preventDefault();
@@ -178,10 +178,10 @@ document.addEventListener('DOMContentLoaded', function() {
 updateProgress(1);
 
 function saveUserResponse(questionNumber) {
-  
+
   const questionElement = document.getElementById('question' + questionNumber);
   const inputs = questionElement.querySelectorAll('input, select');
-  
+
   inputs.forEach(input => {
     if (input.type === 'radio' && input.checked) {
       userResponses[input.name] = input.value;
@@ -190,29 +190,64 @@ function saveUserResponse(questionNumber) {
     }
   });
 
-   // Vérification des réponses en console
+  // Vérification des réponses en console
 }
 
 function submitResponses() {
- 
   saveUserResponse(15);
-  fetch('/save-result/', {  // URL définie dans urls.py
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json',
-          'X-CSRFToken': getCSRFToken()  // Récupération du token CSRF
-      },
-      body: JSON.stringify(userResponses)  // Envoi des réponses
+
+  // Afficher un indicateur de chargement
+  const submitBtn = document.querySelector('.submit-btn');
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = 'Enregistrement...';
+  }
+
+  fetch('/save-result/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': getCSRFToken()
+    },
+    body: JSON.stringify(userResponses)
   })
-  .then(response => response.json())
-  
+    .then(response => {
+      if (response.status === 401 || response.status === 403) {
+        // Utilisateur non connecté, rediriger vers login
+        alert('Veuillez vous connecter pour enregistrer vos résultats.');
+        window.location.href = '/login/';
+        return;
+      }
+      return response.json();
+    })
+    .then(data => {
+      if (data && data.message) {
+        // Succès - rediriger vers historique
+        alert('Test enregistré avec succès !');
+        window.location.href = '/historique/';
+      } else if (data && data.error) {
+        alert('Erreur: ' + data.error);
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = 'Finish';
+        }
+      }
+    })
+    .catch(error => {
+      console.error('Erreur:', error);
+      alert('Une erreur est survenue. Veuillez réessayer.');
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Finish';
+      }
+    });
 }
 
 // Fonction pour récupérer le token CSRF
 function getCSRFToken() {
   return document.cookie.split('; ')
-      .find(row => row.startsWith('csrftoken'))
-      ?.split('=')[1] || '';
+    .find(row => row.startsWith('csrftoken'))
+    ?.split('=')[1] || '';
 }
 
 

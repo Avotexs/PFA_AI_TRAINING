@@ -86,8 +86,12 @@ import json
 from .models import SickleCellResult, UserProfile  # Import des modèles
 
 @csrf_exempt
-@login_required
 def save_sickle_cell_result(request):
+    """Sauvegarde les résultats du test Sickle Cell - AJAX endpoint"""
+    # Vérification manuelle de l'authentification pour AJAX
+    if not request.user.is_authenticated:
+        return JsonResponse({"error": "Non authentifié", "redirect": "/login/"}, status=401)
+    
     if request.method == "POST":
         try:
             data = json.loads(request.body)
@@ -100,7 +104,7 @@ def save_sickle_cell_result(request):
             )
             return JsonResponse({"message": "Données enregistrées avec succès", "id": result.user_id}, status=201)
         except UserProfile.DoesNotExist:
-            return JsonResponse({"error": "Profil utilisateur non trouvé"}, status=400)
+            return JsonResponse({"error": "Profil utilisateur non trouvé. Veuillez compléter votre inscription."}, status=400)
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=400)
     return JsonResponse({"error": "Méthode non autorisée"}, status=405)
@@ -128,8 +132,12 @@ import json
 from .models import CholesterolResult
 
 @csrf_exempt
-@login_required
 def Cholesterol_results(request):
+    """Sauvegarde les résultats du test Cholestérol - AJAX endpoint"""
+    # Vérification manuelle de l'authentification pour AJAX
+    if not request.user.is_authenticated:
+        return JsonResponse({'status': 'error', 'message': 'Non authentifié', 'redirect': '/login/'}, status=401)
+    
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
@@ -144,9 +152,11 @@ def Cholesterol_results(request):
             result.save()
             return JsonResponse({'status': 'success', 'message': 'Résultats enregistrés avec succès'})
         except UserProfile.DoesNotExist:
-            return JsonResponse({'status': 'error', 'message': 'Profil utilisateur non trouvé'}, status=400)
+            return JsonResponse({'status': 'error', 'message': 'Profil utilisateur non trouvé. Veuillez compléter votre inscription.'}, status=400)
         except json.JSONDecodeError:
             return JsonResponse({'status': 'error', 'message': 'Données invalides'}, status=400)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
     return JsonResponse({'status': 'error', 'message': 'Méthode HTTP non autorisée'}, status=405)
 
 
