@@ -11,7 +11,11 @@ import json
 def home(request):
     return render(request,'welcome/home.html',{'title':'GeneGuard'})
 
-# Pages accessibles à tous
+# ============================================================
+# PAGES PROTÉGÉES - Nécessitent une connexion utilisateur
+# ============================================================
+
+@login_required
 def ListeMaladie(request):
     return render(request,'welcome/ListeMaladie.html',{'title':'ListeMaladie'})
 
@@ -262,8 +266,31 @@ def profile_view(request):
         'cholesterol_results': cholesterol_results,
     })
 
+@login_required
 def historique_view(request):
-    return render(request, "welcome/historique.html")
+    """Affiche l'historique des tests de l'utilisateur"""
+    try:
+        user_profile = UserProfile.objects.get(user=request.user)
+    except UserProfile.DoesNotExist:
+        user_profile = None
+    
+    # Récupérer tous les résultats de tests
+    sickle_results = []
+    cholesterol_results = []
+    
+    if user_profile:
+        sickle_results = SickleCellResult.objects.filter(user_profile=user_profile).order_by('-created_at')
+        cholesterol_results = CholesterolResult.objects.filter(user_profile_id=user_profile).order_by('-created_at')
+    
+    # Compter le nombre total de tests
+    total_tests = len(sickle_results) + len(cholesterol_results)
+    
+    return render(request, "welcome/historique.html", {
+        'user_profile': user_profile,
+        'sickle_results': sickle_results,
+        'cholesterol_results': cholesterol_results,
+        'total_tests': total_tests,
+    })
 #model training
 @csrf_exempt
 def predict_diabetes_result(request):
