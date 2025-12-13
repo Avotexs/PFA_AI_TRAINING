@@ -1,0 +1,383 @@
+{% extends 'welcome/base.html'%}
+{% load static%}
+{% block content%}
+
+<style>
+    * {
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .result-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 40px 20px;
+    }
+
+    .result-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .result-header h1 {
+        color: #2c3e50;
+        font-size: 2rem;
+        margin-bottom: 15px;
+    }
+
+    .result-header h1 i {
+        color: #e53935;
+    }
+
+    .risk-card {
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .risk-gauge {
+        position: relative;
+        width: 200px;
+        height: 100px;
+        margin: 0 auto 30px;
+        overflow: hidden;
+    }
+
+    .risk-gauge::before {
+        content: '';
+        position: absolute;
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        background: conic-gradient(#4caf50 0deg 60deg,
+                #ffeb3b 60deg 120deg,
+                #ff9800 120deg 180deg,
+                #e53935 180deg 360deg);
+        top: 0;
+        left: 0;
+    }
+
+    .risk-gauge::after {
+        content: '';
+        position: absolute;
+        width: 140px;
+        height: 140px;
+        background: white;
+        border-radius: 50%;
+        top: 30px;
+        left: 30px;
+    }
+
+    .risk-percentage {
+        font-size: 4rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .risk-percentage.high {
+        color: #e53935;
+    }
+
+    .risk-percentage.medium {
+        color: #ff9800;
+    }
+
+    .risk-percentage.low {
+        color: #4caf50;
+    }
+
+    .risk-label {
+        font-size: 1.5rem;
+        font-weight: 600;
+        padding: 10px 30px;
+        border-radius: 30px;
+        display: inline-block;
+    }
+
+    .risk-label.high {
+        background: linear-gradient(135deg, #ffebee, #ffcdd2);
+        color: #c62828;
+    }
+
+    .risk-label.medium {
+        background: linear-gradient(135deg, #fff8e1, #ffe0b2);
+        color: #e65100;
+    }
+
+    .risk-label.low {
+        background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+        color: #2e7d32;
+    }
+
+    .inputs-summary {
+        background: linear-gradient(135deg, #f5f5f5, #eeeeee);
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 30px;
+    }
+
+    .inputs-summary h3 {
+        color: #455a64;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .inputs-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+    }
+
+    .input-item {
+        background: white;
+        padding: 12px 15px;
+        border-radius: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .input-item span:first-child {
+        color: #7f8c8d;
+        font-size: 14px;
+    }
+
+    .input-item span:last-child {
+        font-weight: 600;
+        color: #2c3e50;
+    }
+
+    .precautions-section {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .precautions-section h3 {
+        color: #2c3e50;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .precautions-section h3 i {
+        color: #e53935;
+    }
+
+    .precaution-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .precaution-list li {
+        padding: 15px 20px;
+        background: linear-gradient(135deg, #ffebee, #fff);
+        border-left: 4px solid #e53935;
+        border-radius: 0 10px 10px 0;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .precaution-list li i {
+        color: #e53935;
+        margin-top: 3px;
+    }
+
+    .disclaimer {
+        background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+        padding: 20px 25px;
+        border-radius: 15px;
+        border-left: 5px solid #e65100;
+        margin-bottom: 30px;
+    }
+
+    .disclaimer h4 {
+        color: #e65100;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .disclaimer p {
+        color: #bf360c;
+        margin: 0;
+    }
+
+    .action-buttons {
+        text-align: center;
+    }
+
+    .action-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 15px 30px;
+        border-radius: 30px;
+        font-size: 16px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        margin: 5px;
+    }
+
+    .action-btn.primary {
+        background: linear-gradient(135deg, #e53935, #c62828);
+        color: white;
+        box-shadow: 0 5px 15px rgba(229, 57, 53, 0.3);
+    }
+
+    .action-btn.primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(229, 57, 53, 0.4);
+    }
+
+    .action-btn.secondary {
+        background: white;
+        color: #e53935;
+        border: 2px solid #e53935;
+    }
+
+    .action-btn.secondary:hover {
+        background: #ffebee;
+    }
+
+    .error-container {
+        text-align: center;
+        padding: 60px 20px;
+    }
+
+    .error-container i {
+        font-size: 80px;
+        color: #e53935;
+        margin-bottom: 20px;
+    }
+
+    @media (max-width: 768px) {
+        .inputs-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 480px) {
+        .inputs-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="result-container">
+    {% if error %}
+    <div class="error-container">
+        <i class="fas fa-exclamation-triangle"></i>
+        <h2>Assessment Error</h2>
+        <p>{{ error }}</p>
+        <a href="{% url 'formulaire_cardio' %}" class="action-btn primary">
+            <i class="fas fa-arrow-left"></i> Try Again
+        </a>
+    </div>
+    {% else %}
+
+    <div class="result-header">
+        <h1><i class="fas fa-heartbeat"></i> Cardiovascular Risk Assessment Results</h1>
+    </div>
+
+    <div class="risk-card">
+        <div class="risk-percentage {{ risk_class }}">{{ probability }}%</div>
+        <div class="risk-label {{ risk_class }}">
+            {% if risk_class == 'high' %}
+            <i class="fas fa-exclamation-triangle"></i>
+            {% elif risk_class == 'medium' %}
+            <i class="fas fa-exclamation-circle"></i>
+            {% else %}
+            <i class="fas fa-check-circle"></i>
+            {% endif %}
+            {{ risk_level }}
+        </div>
+    </div>
+
+    <div class="inputs-summary">
+        <h3><i class="fas fa-clipboard-list"></i> Your Health Profile</h3>
+        <div class="inputs-grid">
+            <div class="input-item">
+                <span>Age</span>
+                <span>{{ user_inputs.age }} years</span>
+            </div>
+            <div class="input-item">
+                <span>Gender</span>
+                <span>{{ user_inputs.gender }}</span>
+            </div>
+            <div class="input-item">
+                <span>BMI</span>
+                <span>{{ user_inputs.bmi }}</span>
+            </div>
+            <div class="input-item">
+                <span>Blood Pressure</span>
+                <span>{{ user_inputs.systolic_bp }}/{{ user_inputs.diastolic_bp }}</span>
+            </div>
+            <div class="input-item">
+                <span>Cholesterol</span>
+                <span>{{ user_inputs.cholesterol }}</span>
+            </div>
+            <div class="input-item">
+                <span>Glucose</span>
+                <span>{{ user_inputs.glucose }}</span>
+            </div>
+            <div class="input-item">
+                <span>Smoking</span>
+                <span>{{ user_inputs.smoking }}</span>
+            </div>
+            <div class="input-item">
+                <span>Alcohol</span>
+                <span>{{ user_inputs.alcohol }}</span>
+            </div>
+            <div class="input-item">
+                <span>Active</span>
+                <span>{{ user_inputs.active }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="precautions-section">
+        <h3><i class="fas fa-shield-alt"></i> Personalized Recommendations</h3>
+        <ul class="precaution-list">
+            {% for precaution in precautions %}
+            <li>
+                <i class="fas fa-check-circle"></i>
+                <span>{{ precaution }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="disclaimer">
+        <h4><i class="fas fa-info-circle"></i> Important Notice</h4>
+        <p>This assessment is based on machine learning analysis and statistical patterns. It should not replace
+            professional medical advice, diagnosis, or treatment. Please consult a healthcare professional for accurate
+            cardiovascular evaluation.</p>
+    </div>
+
+    <div class="action-buttons">
+        <a href="{% url 'formulaire_cardio' %}" class="action-btn primary">
+            <i class="fas fa-redo"></i> Take Another Assessment
+        </a>
+        <a href="{% url 'home' %}" class="action-btn secondary">
+            <i class="fas fa-home"></i> Go Home
+        </a>
+    </div>
+
+    {% endif %}
+</div>
+
+{% endblock content%}
