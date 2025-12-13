@@ -67,6 +67,32 @@
 
 <div class="partie_image">
   <div class="paragraphes">
+    <p>Notre plateforme met un point d'honneur à garantir la sécurité et la confidentialité de vos données personnelles.
+      Avec GeneGuard, vous bénéficiez d’un accompagnement sécurisé, transparent et conforme aux normes médicales et
+      éthiques.
+
+    </p>
+
+  </div>
+  <div class="image">
+    <img src="{% static 'image/rr.gif' %}" alt="Description de l'image">
+  </div>
+</div>
+
+<div class="partie_green">
+  <h2>Un travail d'équipe plus efficace est à portée de main...</h2>
+  <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 25px;">
+    <a href="{% url 'general_test' %}" class="btn"
+      style="background: linear-gradient(135deg, #45a049, #2e7d32); color: white; padding: 18px 40px; font-size: 18px; border-radius: 30px; text-decoration: none; display: flex; align-items: center; gap: 12px; box-shadow: 0 5px 15px rgba(69, 160, 73, 0.3); transition: all 0.3s ease;">
+      <i class="fas fa-stethoscope" style="font-size: 22px;"></i>
+      Take General Health Test
+    </a>
+    <a href="{% url 'ListeMaladie' %}" class="btn"
+      style="background: linear-gradient(135deg, #3498db, #1565c0); color: white; padding: 18px 40px; font-size: 18px; border-radius: 30px; text-decoration: none; display: flex; align-items: center; gap: 12px; box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3); transition: all 0.3s ease;">
+      <i class="fas fa-list-ul" style="font-size: 22px;"></i>
+      Choose Specific Disease
+    </a>
+  </div>
     <h2 class="section-title">Sécurité & Confidentialité</h2>
     <p>Notre plateforme met un point d'honneur à garantir la <strong>sécurité et la confidentialité</strong> de vos
       données personnelles.</p>
