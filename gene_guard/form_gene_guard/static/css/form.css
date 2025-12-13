@@ -1,25 +1,31 @@
 .bodyform {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
-    color: #333;
-    background-color: #eef3f9;
-    line-height: 1.6;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  .loader {
-  border: 6px solid #f3f3f3;
-  border-top: 6px solid #4caf50;
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  color: var(--text-dark, #333);
+  background-color: var(--light-bg, #f8fafc);
+  line-height: 1.6;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.loader {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid var(--primary-green, #00A651);
   border-radius: 50%;
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   animation: spin 1s linear infinite;
   margin: auto;
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 #loadingIndicator {
@@ -31,207 +37,270 @@
   display: none;
 }
 
-  .assessment-container {
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    padding: 25px;
-    margin-top: 110px;
-  }
-  
-  h2 {
-    text-align: center;
-    margin-bottom: 25px;
-    color: #2B5876;
-    font-size: 28px;
-  }
-  
-  h6 {
-    text-align: center;
-    margin-top: 20px;
-    color: #666;
-    font-weight: normal;
-  }
-  
-  .progress-container {
-    margin-bottom: 30px;
-  }
-  
-  .progress-line {
-    height: 4px;
-    background: #e0e0e0;
-    border-radius: 4px;
-    position: relative;
-    margin: 30px 0;
-  }
-  
-  .progress-fill {
-    height: 100%;
-    background: #3498db;
-    border-radius: 4px;
-    transition: width 0.3s ease;
-    width: 0%;
-    position: absolute;
-  }
-  
-  .progress-circles {
-    display: flex;
-    justify-content: space-between;
-    position: absolute;
-    width: 100%;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-  
-  .progress-circle {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background: #ecf0f1;
-    color: #7f8c8d;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-  }
-  
-  .progress-circle.active {
-    background: #3498db;
-    color: white;
-  }
-  
-  .question {
-    display: none;
-    margin-bottom: 25px;
-  }
-  
-  .question.active {
-    display: block;
-  }
-  
-  .question label {
-    display: block;
-    font-size: 18px;
-    color: #2c3e50;
-    margin-bottom: 12px;
-    font-weight: 500;
-  }
-  
-  input[type="number"], select {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 16px;
-    margin-bottom: 20px;
-  }
-  
-  .radio-group {
-    margin-bottom: 20px;
-  }
-  
-  .radio-option {
-    display: block;
-    padding: 12px 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-    font-size: 16px;
-    position: relative;
-    margin-bottom: 15px;
-  }
-  
-  .radio-option:hover {
-    background: #f9f9f9;
-  }
-  
-  .radio-option.selected {
-    border-color: #4a90e2;
-    background: #f0f7ff;
-  }
-  
-  .radio-option input[type="radio"] {
-    position: absolute;
+.assessment-container {
+  background: var(--white, #fff);
+  border-radius: var(--radii-lg, 20px);
+  box-shadow: var(--shadow-lg, 0 10px 25px rgba(0, 0, 0, 0.1));
+  padding: 40px;
+  margin-top: 110px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: var(--primary-green, #00A651);
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+h6 {
+  text-align: center;
+  margin-top: 25px;
+  color: var(--text-muted, #64748b);
+  font-weight: normal;
+  font-size: 0.95rem;
+}
+
+/* Progress Bar */
+.progress-container {
+  margin-bottom: 40px;
+}
+
+.progress-line {
+  height: 6px;
+  background: #e2e8f0;
+  border-radius: 10px;
+  position: relative;
+  margin: 40px 0;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary-green, #00A651), var(--accent-teal, #00B4D8));
+  border-radius: 10px;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 0%;
+  position: absolute;
+  box-shadow: 0 2px 5px rgba(0, 166, 81, 0.2);
+}
+
+.progress-circles {
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.progress-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.progress-circle.active {
+  background: var(--primary-green, #00A651);
+  color: white;
+  transform: scale(1.1);
+  box-shadow: 0 4px 10px rgba(0, 166, 81, 0.3);
+}
+
+/* Questions */
+.question {
+  display: none;
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
     opacity: 0;
+    transform: translateY(10px);
   }
-  
-  .radio-circle {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border: 2px solid #ccc;
-    border-radius: 50%;
-    margin-right: 10px;
-    vertical-align: middle;
-    position: relative;
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .radio-option.selected .radio-circle {
-    border-color: #4a90e2;
-  }
-  
-  .radio-option.selected .radio-circle::after {
-    content: '';
-    width: 12px;
-    height: 12px;
-    background: #4a90e2;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-  }
-  
-  .btn-group {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 30px;
-  }
-  
-  button {
-    padding: 12px 24px;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-  
-  .prev-btn {
-    background: #f1f1f1;
-    color: #121212;
-  }
-  
-  .next-btn, .submit-btn {
-    background: #4a90e2;
-    color: white;
-  }
-  
-  .prev-btn:hover {
-    background: #e0e0e0;
-  }
-  
-  .next-btn:hover, .submit-btn:hover {
-    background: #3a7fcb;
-  }
-  
-  .submit-btn {
-    background: #27ae60;
-  }
-  
-  .error-message {
-    color: #e53935;
-    background: #ffebee;
-    border-left: 5px solid #e74c3c;
-    text-align: center;
-    padding: 10px;
-    border-radius: 4px;
-    font-weight: 500;
-    margin-bottom: 20px;
-  }
-  
-  .hidden {
-    display: none;
-  }
-  
+}
+
+.question.active {
+  display: block;
+}
+
+.question label {
+  display: block;
+  font-size: 1.1rem;
+  color: var(--text-dark, #1e293b);
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+input[type="number"],
+select {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: var(--radii-md, 12px);
+  font-size: 1rem;
+  margin-bottom: 25px;
+  transition: all 0.3s ease;
+  background-color: #f8fafc;
+}
+
+input[type="number"]:focus,
+select:focus {
+  outline: none;
+  border-color: var(--primary-green, #00A651);
+  background-color: #fff;
+  box-shadow: 0 0 0 4px rgba(0, 166, 81, 0.1);
+}
+
+/* Radio Options */
+.radio-group {
+  margin-bottom: 25px;
+  display: grid;
+  gap: 12px;
+}
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  padding: 16px 20px;
+  border: 2px solid #e2e8f0;
+  border-radius: var(--radii-md, 12px);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+  position: relative;
+  background: #fff;
+}
+
+.radio-option:hover {
+  border-color: #cbd5e1;
+  background: #f8fafc;
+}
+
+.radio-option.selected {
+  border-color: var(--primary-green, #00A651);
+  background: #f0fdf4;
+  box-shadow: 0 4px 12px rgba(0, 166, 81, 0.1);
+}
+
+.radio-option input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+}
+
+.radio-circle {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  border: 2px solid #cbd5e1;
+  border-radius: 50%;
+  margin-right: 15px;
+  position: relative;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.radio-option.selected .radio-circle {
+  border-color: var(--primary-green, #00A651);
+  background: var(--primary-green, #00A651);
+}
+
+.radio-option.selected .radio-circle::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+}
+
+/* Buttons */
+.btn-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+  gap: 20px;
+}
+
+button {
+  padding: 14px 28px;
+  border: none;
+  border-radius: var(--radii-full, 50px);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.prev-btn {
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+.prev-btn:hover {
+  background: #e2e8f0;
+  color: #475569;
+  transform: translateY(-2px);
+}
+
+.next-btn {
+  background: linear-gradient(135deg, var(--primary-green, #00A651) 0%, var(--accent-teal, #00B4D8) 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 166, 81, 0.25);
+}
+
+.next-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 166, 81, 0.35);
+}
+
+.submit-btn {
+  background: linear-gradient(135deg, var(--secondary-blue, #0077B6) 0%, #0096C7 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 119, 182, 0.25);
+}
+
+.submit-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 119, 182, 0.35);
+}
+
+.error-message {
+  color: #ef4444;
+  background: #fef2f2;
+  border-left: 4px solid #ef4444;
+  text-align: left;
+  padding: 15px;
+  border-radius: 8px;
+  font-weight: 500;
+  margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.error-message::before {
+  content: '⚠️';
+}

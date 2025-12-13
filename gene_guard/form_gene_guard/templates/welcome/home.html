@@ -1,40 +1,41 @@
 {% extends 'welcome/base.html'%}
 {% load static%}
 {% block content%}
+
+<!-- Hero Slider -->
 <div class="slider">
   <div class="slides">
-    <img src="{% static 'image/slide1.jpg' %}" class="active" alt="Image 1">
-    <img src="{% static 'image/slide2.jpg' %}" alt="Image 2">
-    <img src="{% static 'image/slide3.jpg' %}" alt="Image 3">
-
+    <img src="{% static 'image/slide1.jpg' %}" class="active" alt="Recherche médicale avancée">
+    <img src="{% static 'image/slide2.jpg' %}" alt="Laboratoire de génétique">
+    <img src="{% static 'image/slide3.jpg' %}" alt="Analyse ADN">
   </div>
 </div>
 
+<!-- Features Grid -->
 <div class="card-container">
   <div class="card">
-    <img src="{% static 'image/fr.png' %}" alt="icons">
+    <img src="{% static 'image/fr.png' %}" alt="Évaluation">
     <h3>Évaluer les maladies</h3>
-
+    <p>Détection précoce des pathologies</p>
   </div>
   <div class="card">
-    <img src="{% static 'image/adn.png' %}" alt="icons">
+    <img src="{% static 'image/adn.png' %}" alt="ADN">
     <h3>Estimer les risques</h3>
-
+    <p>Analyse de vos prédispositions</p>
   </div>
   <div class="card">
-    <img src="{% static 'image/temps-rapide.png' %}" alt="icons">
+    <img src="{% static 'image/temps-rapide.png' %}" alt="Rapide">
     <h3>Formulaire rapide</h3>
-
+    <p>Simple et efficace</p>
   </div>
   <div class="card">
-    <img src="{% static 'image/precision.png' %}" alt="icons">
+    <img src="{% static 'image/precision.png' %}" alt="Précision">
     <h3>Probabilités exactes</h3>
-
+    <p>Algorithmes de haute précision</p>
   </div>
 </div>
 
-
-
+<!-- Section 1 -->
 <div class="partie_image">
   <div class="paragraphes">
     <h2 class="section-title">Analyse Génétique Personnalisée</h2>
@@ -46,13 +47,14 @@
       50 maladies héréditaires.</p>
   </div>
   <div class="image">
-    <img src="{% static 'image/test.gif' %}" alt="Analyse génétique">
+    <img src="{% static 'image/test.gif' %}" alt="Analyse génétique en cours">
   </div>
 </div>
 
+<!-- Section 2 -->
 <div class="partie_image">
   <div class="image">
-    <img src="{% static 'image/t.gif' %}" alt="Prédiction des risques">
+    <img src="{% static 'image/t.gif' %}" alt="Visualisation des données">
   </div>
   <div class="paragraphes">
     <h2 class="section-title">Prédiction Intelligente des Risques</h2>
@@ -65,34 +67,9 @@
   </div>
 </div>
 
+<!-- Section 3 -->
 <div class="partie_image">
   <div class="paragraphes">
-    <p>Notre plateforme met un point d'honneur à garantir la sécurité et la confidentialité de vos données personnelles.
-      Avec GeneGuard, vous bénéficiez d’un accompagnement sécurisé, transparent et conforme aux normes médicales et
-      éthiques.
-
-    </p>
-
-  </div>
-  <div class="image">
-    <img src="{% static 'image/rr.gif' %}" alt="Description de l'image">
-  </div>
-</div>
-
-<div class="partie_green">
-  <h2>Un travail d'équipe plus efficace est à portée de main...</h2>
-  <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 25px;">
-    <a href="{% url 'general_test' %}" class="btn"
-      style="background: linear-gradient(135deg, #45a049, #2e7d32); color: white; padding: 18px 40px; font-size: 18px; border-radius: 30px; text-decoration: none; display: flex; align-items: center; gap: 12px; box-shadow: 0 5px 15px rgba(69, 160, 73, 0.3); transition: all 0.3s ease;">
-      <i class="fas fa-stethoscope" style="font-size: 22px;"></i>
-      Take General Health Test
-    </a>
-    <a href="{% url 'ListeMaladie' %}" class="btn"
-      style="background: linear-gradient(135deg, #3498db, #1565c0); color: white; padding: 18px 40px; font-size: 18px; border-radius: 30px; text-decoration: none; display: flex; align-items: center; gap: 12px; box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3); transition: all 0.3s ease;">
-      <i class="fas fa-list-ul" style="font-size: 22px;"></i>
-      Choose Specific Disease
-    </a>
-  </div>
     <h2 class="section-title">Sécurité & Confidentialité</h2>
     <p>Notre plateforme met un point d'honneur à garantir la <strong>sécurité et la confidentialité</strong> de vos
       données personnelles.</p>
@@ -102,18 +79,31 @@
       de votre vie privée.</p>
   </div>
   <div class="image">
-    <img src="{% static 'image/rr.gif' %}" alt="Sécurité des données">
+    <img src="{% static 'image/rr.gif' %}" alt="Sécurité et cryptage">
   </div>
 </div>
 
+<!-- Call to Action -->
 <div class="partie_green">
+  <h2>Un travail d'équipe plus efficace est à portée de main...</h2>
 
-  <h2>Un travail d’équipe plus efficace est à portée de main...</h2>
-  <button class="btn">Starting</button>
+  <div class="btn-group">
+    <a href="{% url 'general_test' %}" class="btn btn-primary">
+      <i class="fas fa-stethoscope"></i>
+      Take General Health Test
+    </a>
+
+    <a href="{% url 'ListeMaladie' %}" class="btn btn-secondary">
+      <i class="fas fa-list-ul"></i>
+      Choose Specific Disease
+    </a>
+  </div>
 </div>
+
 <button id="backToTop" class="back-to-top">
   <i class="fas fa-arrow-up"></i>
 </button>
+
 <script src="{% static 'js/scriptHOME.js' %}" defer></script>
 
 {% endblock content%}
