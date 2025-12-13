@@ -583,3 +583,129 @@ def predict_disease(request):
         'selected_symptoms': selected_display,
         'symptom_count': len(selected_symptoms)
     })
+
+# ===== CARDIOVASCULAR DISEASE PREDICTION =====
+
+# Load cardio prediction model
+try:
+    cardio_model = joblib.load(os.path.join(symptom_model_dir, 'cardio_model.pkl'))
+    cardio_scaler = joblib.load(os.path.join(symptom_model_dir, 'cardio_scaler.pkl'))
+    cardio_features = joblib.load(os.path.join(symptom_model_dir, 'cardio_features.pkl'))
+    print("Cardio prediction model loaded successfully.")
+except FileNotFoundError as e:
+    cardio_model = None
+    cardio_scaler = None
+    cardio_features = []
+    print(f"ERROR: Could not load cardio model: {e}")
+
+
+def formulaire_cardio(request):
+    """Display the cardiovascular disease risk assessment form."""
+    return render(request, 'welcome/cardio_form.html', {
+        'title': 'Cardiovascular Disease Risk Assessment'
+    })
+
+
+@csrf_exempt
+def predict_cardio(request):
+    """Predict cardiovascular disease risk based on user inputs."""
+    if request.method != 'POST':
+        return redirect('formulaire_cardio')
+    
+    if cardio_model is None:
+        return render(request, 'welcome/cardio_result.html', {
+            'title': 'Prediction Error',
+            'error': 'Model not loaded. Please try again later.'
+        })
+    
+    try:
+        # Get form data
+        age_years = float(request.POST.get('age', 0))
+        gender = int(request.POST.get('gender', 1))
+        height = float(request.POST.get('height', 170))
+        weight = float(request.POST.get('weight', 70))
+        ap_hi = float(request.POST.get('ap_hi', 120))
+        ap_lo = float(request.POST.get('ap_lo', 80))
+        cholesterol = int(request.POST.get('cholesterol', 1))
+        gluc = int(request.POST.get('gluc', 1))
+        smoke = int(request.POST.get('smoke', 0))
+        alco = int(request.POST.get('alco', 0))
+        active = int(request.POST.get('active', 1))
+        
+        # Calculate BMI
+        bmi = weight / ((height / 100) ** 2)
+        
+        # Create feature array in correct order
+        features = [age_years, gender, height, weight, ap_hi, ap_lo, 
+                   cholesterol, gluc, smoke, alco, active, bmi]
+        
+        # Scale features
+        features_scaled = cardio_scaler.transform([features])
+        
+        # Get prediction and probability
+        prediction = cardio_model.predict(features_scaled)[0]
+        probability = cardio_model.predict_proba(features_scaled)[0][1] * 100
+        
+        # Determine risk level
+        if probability >= 70:
+            risk_level = 'High Risk'
+            risk_class = 'high'
+        elif probability >= 40:
+            risk_level = 'Moderate Risk'
+            risk_class = 'medium'
+        else:
+            risk_level = 'Low Risk'
+            risk_class = 'low'
+        
+        # Precautions based on risk factors
+        precautions = []
+        if ap_hi >= 140 or ap_lo >= 90:
+            precautions.append("Monitor your blood pressure regularly and consult a doctor about hypertension management")
+        if cholesterol > 1:
+            precautions.append("Follow a low-cholesterol diet and consider medication if recommended by your doctor")
+        if bmi >= 25:
+            precautions.append("Work on maintaining a healthy weight through balanced diet and regular exercise")
+        if smoke == 1:
+            precautions.append("Stop smoking - it significantly increases cardiovascular disease risk")
+        if alco == 1:
+            precautions.append("Limit alcohol consumption to reduce cardiovascular strain")
+        if active == 0:
+            precautions.append("Increase physical activity - aim for at least 30 minutes of moderate exercise daily")
+        if gluc > 1:
+            precautions.append("Monitor blood glucose levels and maintain a balanced diet")
+        if age_years >= 50:
+            precautions.append("Schedule regular cardiovascular check-ups with your healthcare provider")
+        
+        if not precautions:
+            precautions.append("Maintain your healthy lifestyle and continue regular check-ups")
+        
+        # User inputs for display
+        user_inputs = {
+            'age': int(age_years),
+            'gender': 'Female' if gender == 1 else 'Male',
+            'height': height,
+            'weight': weight,
+            'bmi': round(bmi, 1),
+            'systolic_bp': ap_hi,
+            'diastolic_bp': ap_lo,
+            'cholesterol': ['Normal', 'Above Normal', 'Well Above Normal'][cholesterol - 1],
+            'glucose': ['Normal', 'Above Normal', 'Well Above Normal'][gluc - 1],
+            'smoking': 'Yes' if smoke else 'No',
+            'alcohol': 'Yes' if alco else 'No',
+            'active': 'Yes' if active else 'No'
+        }
+        
+        return render(request, 'welcome/cardio_result.html', {
+            'title': 'Cardiovascular Risk Assessment Results',
+            'probability': round(probability, 1),
+            'risk_level': risk_level,
+            'risk_class': risk_class,
+            'precautions': precautions,
+            'user_inputs': user_inputs
+        })
+        
+    except Exception as e:
+        return render(request, 'welcome/cardio_result.html', {
+            'title': 'Prediction Error',
+            'error': f'An error occurred: {str(e)}'
+        })
